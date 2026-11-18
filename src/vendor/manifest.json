@@ -1,0 +1,12 @@
+{
+  "packages": [
+    {
+      "name": "@zxing/browser",
+      "version": "0.2.1",
+      "license": "MIT",
+      "source": "https://www.npmjs.com/package/@zxing/browser/v/0.2.1",
+      "runtimeBundle": "zxing-browser/0.2.1/zxing-browser.min.js",
+      "sha256": "066BC34EDFCDD4A33F0964AEEC967752A0DEA1CCAF36E58E319AC9FCB5070F6A"
+    }
+  ]
+}

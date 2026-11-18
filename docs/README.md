@@ -5,6 +5,7 @@
 ## 目錄
 
 - `src/`：網站入口 `index.html`、樣式 `styles.css` 與掃描程式 `app.js`。
+- `src/vendor/`：依套件名稱與版本保存的外部瀏覽器套件。
 - `docs/`：使用與部署說明。
 
 ## 使用方式
@@ -25,4 +26,4 @@ python -m http.server 8000 --directory src
 - 圖片：選擇含有 QR Code 的圖片，或將圖片拖曳到掃描預覽區。
 - 結果：原始文字以純文字顯示，可複製；QR Code 中的網址不會自動開啟。
 
-相機串流與圖片解碼都在瀏覽器本機處理。掃描元件透過固定版本的 unpkg CDN 載入，因此首次開啟頁面需要網路連線。
+相機串流與圖片解碼都在瀏覽器本機處理。ZXing Browser 解碼器已隨網站放在 `src/vendor/`，不需在執行時連線到套件 CDN。外部套件版本、授權與升版流程記錄於 [vendor-dependencies.md](vendor-dependencies.md)。
