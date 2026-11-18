@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f6f5f0" />
+    <meta
+      name="description"
+      content="用手機相機掃描 QR Code，快速查看並複製其中的原始內容。"
+    />
+    <title>QR 讀值器｜掃描並查看 QR Code 內容</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="site-header">
+        <a class="brand" href="./" aria-label="QR 讀值器首頁">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="none">
+              <path d="M4 4h10v10H4zM18 4h10v10H18zM4 18h10v10H4z" stroke="currentColor" stroke-width="3" />
+              <path d="M19 19h4v4h-4zM25 19h3M25 25h3M19 27h3" stroke="currentColor" stroke-width="3" stroke-linecap="square" />
+            </svg>
+          </span>
+          <span class="brand-copy">
+            <strong>QR 讀值器</strong>
+            <span>SCAN · INSPECT · SHARE</span>
+          </span>
+        </a>
+        <div class="local-note">
+          <span class="local-note-dot" aria-hidden="true"></span>
+          內容僅在此裝置處理
+        </div>
+      </header>
+
+      <main>
+        <section class="intro" aria-labelledby="page-title">
+          <div class="intro-copy">
+            <p class="eyebrow"><span aria-hidden="true"></span> 日常驗證小工具</p>
+            <h1 id="page-title">掃描之後，<br class="desktop-break" />看見它真正的內容。</h1>
+            <p class="intro-description">
+              用手機後鏡頭掃描 QR Code，將讀取到的原始值清楚呈現，方便核對與溝通。
+            </p>
+          </div>
+          <div class="intro-aside" aria-label="工具說明">
+            <span class="aside-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M7 3H4a1 1 0 0 0-1 1v3m14-4h3a1 1 0 0 1 1 1v3M3 17v3a1 1 0 0 0 1 1h3m14-4v3a1 1 0 0 1-1 1h-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                <path d="M8 8h8v8H8z" stroke="currentColor" stroke-width="1.8" />
+                <path d="M10.5 10.5h3v3h-3z" fill="currentColor" />
+              </svg>
+            </span>
+            <span><strong>原始內容</strong><small>不會自動開啟 QR Code 連結</small></span>
+          </div>
+        </section>
+
+        <section class="workspace" aria-label="QR Code 掃描工作區">
+          <article class="panel scanner-panel" aria-labelledby="scanner-heading">
+            <div class="panel-heading">
+              <div class="panel-title-group">
+                <span class="step-number">01</span>
+                <div>
+                  <h2 id="scanner-heading">掃描 QR Code</h2>
+                  <p>使用相機即時掃描，或選取 QR Code 圖片</p>
+                </div>
+              </div>
+              <span class="status-pill" id="camera-status">
+                <span class="status-indicator" aria-hidden="true"></span>
+                <span id="camera-status-label">相機未啟動</span>
+              </span>
+            </div>
+
+            <div class="scanner-stage" id="scanner-stage" aria-label="相機掃描預覽">
+              <video id="camera-preview" autoplay muted playsinline hidden></video>
+              <img id="image-preview" alt="待掃描的 QR Code 圖片" hidden />
+              <div class="stage-shade" aria-hidden="true"></div>
+              <div class="scan-frame" id="scan-frame" aria-hidden="true">
+                <i class="corner corner-tl"></i>
+                <i class="corner corner-tr"></i>
+                <i class="corner corner-bl"></i>
+                <i class="corner corner-br"></i>
+                <span class="scan-line"></span>
+              </div>
+              <div class="stage-prompt" id="stage-prompt">
+                <span class="camera-glyph" aria-hidden="true">
+                  <svg viewBox="0 0 48 48" fill="none">
+                    <path d="M17 11h14l3.2 5H39a3 3 0 0 1 3 3v17a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3V19a3 3 0 0 1 3-3h4.8L17 11Z" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" />
+                    <circle cx="24" cy="26" r="7" stroke="currentColor" stroke-width="2.4" />
+                    <path d="M35.5 21.5h.01" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" />
+                  </svg>
+                </span>
+                <strong id="stage-prompt-title">準備好開始掃描了嗎？</strong>
+                <span id="stage-prompt-description">將 QR Code 放在取景框內，系統會自動讀取</span>
+              </div>
+              <div class="stage-topline" aria-hidden="true">
+                <span class="live-dot"></span>
+                <span id="stage-topline-label">相機預覽</span>
+              </div>
+              <div class="stage-bottomline" id="stage-hint" aria-hidden="true">對準 QR Code，保持穩定</div>
+            </div>
+
+            <div class="scanner-controls">
+              <button class="button button-primary" id="camera-button" type="button">
+                <svg class="button-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path d="M7 4.8h6l1.3 2H16a1.5 1.5 0 0 1 1.5 1.5v6.2A1.5 1.5 0 0 1 16 16H4a1.5 1.5 0 0 1-1.5-1.5V8.3A1.5 1.5 0 0 1 4 6.8h1.7L7 4.8Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+                  <circle cx="10" cy="10.5" r="2.5" stroke="currentColor" stroke-width="1.5" />
+                </svg>
+                <span id="camera-button-label">啟動手機相機</span>
+              </button>
+              <button class="button button-secondary" id="torch-button" type="button" hidden aria-pressed="false">
+                <svg class="button-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path d="M7 2.5h6l-.8 4.2 2.3 2.2v1.6H5.5V8.9l2.3-2.2L7 2.5Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" />
+                  <path d="M7 13h6M7.5 15.5h5M9 18h2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+                </svg>
+                <span>補光</span>
+              </button>
+              <label class="button button-secondary upload-button" for="image-picker">
+                <svg class="button-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <rect x="2.7" y="3.5" width="14.6" height="13" rx="2" stroke="currentColor" stroke-width="1.5" />
+                  <circle cx="7.1" cy="7.7" r="1.3" stroke="currentColor" stroke-width="1.4" />
+                  <path d="m4 14 3.8-3.6 2.3 2 2.2-2 3.7 3.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                選擇圖片
+              </label>
+              <input class="visually-hidden" id="image-picker" type="file" accept="image/*" />
+            </div>
+            <p class="scanner-tip" id="scanner-tip">
+              <svg viewBox="0 0 18 18" fill="none" aria-hidden="true"><circle cx="9" cy="9" r="6.6" stroke="currentColor" stroke-width="1.4" /><path d="M9 8v4M9 5.5h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /></svg>
+              手機會優先使用後鏡頭；首次使用時請允許相機權限。
+            </p>
+            <p class="feedback-message" id="scan-feedback" role="status" aria-live="polite"></p>
+          </article>
+
+          <article class="panel result-panel" aria-labelledby="result-heading">
+            <div class="panel-heading result-heading">
+              <div class="panel-title-group">
+                <span class="step-number">02</span>
+                <div>
+                  <h2 id="result-heading">讀取結果</h2>
+                  <p>掃描成功後，完整內容會顯示在這裡</p>
+                </div>
+              </div>
+              <span class="result-type" id="result-type" hidden>QR CODE</span>
+            </div>
+
+            <div class="result-body">
+              <div class="empty-result" id="empty-result">
+                <span class="empty-icon" aria-hidden="true">
+                  <svg viewBox="0 0 44 44" fill="none">
+                    <rect x="5.5" y="5.5" width="13" height="13" rx="1.5" stroke="currentColor" stroke-width="2" />
+                    <rect x="25.5" y="5.5" width="13" height="13" rx="1.5" stroke="currentColor" stroke-width="2" />
+                    <rect x="5.5" y="25.5" width="13" height="13" rx="1.5" stroke="currentColor" stroke-width="2" />
+                    <path d="M26 26h5v5h-5zM34 26h4M34 34h4M26 35h3" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                  </svg>
+                </span>
+                <strong>等待掃描結果</strong>
+                <span>將 QR Code 對準左側取景框</span>
+              </div>
+
+              <div class="decoded-result" id="decoded-result" hidden>
+                <div class="decoded-meta">
+                  <span class="decoded-success"><span aria-hidden="true"></span>讀取成功</span>
+                  <time id="decoded-time"></time>
+                </div>
+                <pre class="result-value" id="result-value" tabindex="0" aria-label="QR Code 原始內容"></pre>
+                <button class="button button-copy" id="copy-button" type="button">
+                  <svg class="button-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                    <rect x="7" y="6" width="9.5" height="11" rx="1.8" stroke="currentColor" stroke-width="1.5" />
+                    <path d="M12.8 6V4.8A1.8 1.8 0 0 0 11 3H5a1.8 1.8 0 0 0-1.8 1.8v7A1.8 1.8 0 0 0 5 13.6h2" stroke="currentColor" stroke-width="1.5" />
+                  </svg>
+                  <span id="copy-button-label">複製內容</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="result-footer">
+              <span class="footer-shield" aria-hidden="true">
+                <svg viewBox="0 0 18 18" fill="none"><path d="M9 2.2 14.6 4v4.5c0 3.4-2.2 5.8-5.6 7.3-3.4-1.5-5.6-3.9-5.6-7.3V4L9 2.2Z" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round" /><path d="m6.5 8.8 1.7 1.7 3.3-3.6" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" /></svg>
+              </span>
+              <p>內容不會上傳，也不會自動開啟連結。</p>
+              <button class="text-button" id="clear-button" type="button" hidden>清除結果</button>
+            </div>
+          </article>
+        </section>
+
+        <section class="mobile-callout" aria-label="手機使用方式">
+          <span class="mobile-callout-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><rect x="6.5" y="2.5" width="11" height="19" rx="2.2" stroke="currentColor" stroke-width="1.6" /><path d="M10 5h4M10.5 18.5h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></svg>
+          </span>
+          <p><strong>手機直接掃描</strong><span>請以 HTTPS 網址開啟，並允許瀏覽器使用相機。</span></p>
+          <span class="callout-arrow" aria-hidden="true">↗</span>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <span>QR 讀值器 <span class="footer-separator">·</span> 為核對而設</span>
+        <span>掃描資料只在目前瀏覽器中處理</span>
+      </footer>
+    </div>
+
+    <script defer src="https://unpkg.com/@zxing/browser@0.2.1"></script>
+    <script defer src="./app.js"></script>
+  </body>
+</html>
